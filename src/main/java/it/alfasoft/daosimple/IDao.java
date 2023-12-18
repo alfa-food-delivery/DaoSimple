@@ -19,12 +19,12 @@ public interface IDao<T,I> {
     boolean checkOggetto(T elemento) throws DaoException;
     I getGeneratedKey(Statement stmt) throws DaoException;
 
-    String getSelectByIdQuery();
+    String getSelectByIdQuery(I id);
     String getSelectAllQuery();
-    String getInsertQuery();
-    String getDeleteQuery();
-    String getUpdateQuery();
-    String getReplaceQuery();
-    String getSearchByStringQuery();
-    String getSearchByObjectQuery();
+    String getInsertQuery(T elemento);
+    String getDeleteQuery(I id);
+    String getUpdateQuery(I id, T elemento);
+    String getReplaceQuery(I id, T elemento);
+    String getSearchByStringQuery(String searchText);
+    String getSearchByObjectQuery(T searchObj);
 }

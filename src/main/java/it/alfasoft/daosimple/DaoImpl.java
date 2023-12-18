@@ -3,7 +3,6 @@ package it.alfasoft.daosimple;
 import it.alfasoft.propertiesmanager.PropertiesManager;
 
 import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.io.Serializable;
 import java.sql.*;
 import java.util.ArrayList;
@@ -11,7 +10,12 @@ import java.util.List;
 
 public abstract class DaoImpl<T,I> implements IDao<T,I>, Serializable {
 
-    public DaoImpl(){};
+    String tableName;
+
+    public DaoImpl(){}
+
+    public String getTableName(){ return this.tableName;}
+    public void setTableName(String tableName){this.tableName = tableName;}
     public Connection getConnection() throws DaoException {
         Connection connection = null;
         String dburl = null;
@@ -31,7 +35,7 @@ public abstract class DaoImpl<T,I> implements IDao<T,I>, Serializable {
 
     public T getById(I id) throws DaoException {
         try( Statement stmt = getConnection().createStatement();
-             ResultSet rs = stmt.executeQuery(getSelectByIdQuery()) )
+             ResultSet rs = stmt.executeQuery(getSelectByIdQuery(id)) )
         {
             rs.next();
             return convertToDto(rs);
@@ -54,7 +58,7 @@ public abstract class DaoImpl<T,I> implements IDao<T,I>, Serializable {
         if(elemento == null) throw new DaoException();
         try( Statement stmt = getConnection().createStatement() )
         {
-            int qty = stmt.executeUpdate( getInsertQuery(),Statement.RETURN_GENERATED_KEYS );
+            int qty = stmt.executeUpdate( getInsertQuery(elemento),Statement.RETURN_GENERATED_KEYS );
             return getGeneratedKey(stmt);
         }
         catch (Exception e) { e.printStackTrace(); throw new DaoException(); }
@@ -73,7 +77,7 @@ public abstract class DaoImpl<T,I> implements IDao<T,I>, Serializable {
     public int update(I id, T elemento) throws DaoException {
         if(checkOggetto(elemento)){
             try( Statement stmt = getConnection().createStatement() )
-            { return stmt.executeUpdate( getUpdateQuery() ); }
+            { return stmt.executeUpdate( getUpdateQuery(id,elemento) ); }
             catch (Exception e) { e.printStackTrace(); throw new DaoException(e); }
         }
         return 0;
@@ -83,7 +87,7 @@ public abstract class DaoImpl<T,I> implements IDao<T,I>, Serializable {
     public int replace(I id, T elemento) throws DaoException {
         if(checkOggetto(elemento)){
             try( Statement stmt = getConnection().createStatement() )
-            { return stmt.executeUpdate( getReplaceQuery() ); }
+            { return stmt.executeUpdate( getReplaceQuery(id,elemento) ); }
             catch (Exception e) { e.printStackTrace(); throw new DaoException(e); }
         }
         return 0;
@@ -91,7 +95,7 @@ public abstract class DaoImpl<T,I> implements IDao<T,I>, Serializable {
     //DELETE
     public int delete(I id) throws DaoException {
         try( Statement stmt = getConnection().createStatement() )
-        { return stmt.executeUpdate( getDeleteQuery() ); }
+        { return stmt.executeUpdate( getDeleteQuery(id) ); }
         catch (Exception e) { e.printStackTrace(); throw new DaoException(e); }
     }
     //FIND BY STRING
@@ -99,7 +103,7 @@ public abstract class DaoImpl<T,I> implements IDao<T,I>, Serializable {
         try( Statement stmt = getConnection().createStatement() )
         {
             List<T> oggetti = new ArrayList<>();
-            ResultSet rs = stmt.executeQuery( getSearchByStringQuery() );
+            ResultSet rs = stmt.executeQuery( getSearchByStringQuery(searchText) );
             while(rs.next()){ oggetti.add( convertToDto(rs)); }
             return oggetti;
         }catch(Exception e){ e.printStackTrace(); throw new DaoException(e);}
@@ -109,19 +113,19 @@ public abstract class DaoImpl<T,I> implements IDao<T,I>, Serializable {
         try( Statement stmt = getConnection().createStatement() )
         {
             List<T> oggetti = new ArrayList<>();
-            ResultSet rs = stmt.executeQuery( getSearchByObjectQuery() );
+            ResultSet rs = stmt.executeQuery( getSearchByObjectQuery(searchObj) );
             while(rs.next()){ oggetti.add( convertToDto(rs)); }
             return oggetti;
         }catch(Exception e){ e.printStackTrace();throw new DaoException(e);}
     }
 
     // FUNZIONI SQL INEJCTORS
-    public abstract String getSelectByIdQuery();
+    public abstract String getSelectByIdQuery(I id);
     public abstract String getSelectAllQuery();
-    public abstract String getInsertQuery();
-    public abstract String getDeleteQuery();
-    public abstract String getUpdateQuery();
-    public abstract String getReplaceQuery();
-    public abstract String getSearchByStringQuery();
-    public abstract String getSearchByObjectQuery();
+    public abstract String getInsertQuery(T elemento);
+    public abstract String getDeleteQuery(I id);
+    public abstract String getUpdateQuery(I id, T elemento);
+    public abstract String getReplaceQuery(I id, T elemento);
+    public abstract String getSearchByStringQuery(String searchText);
+    public abstract String getSearchByObjectQuery(T elemento);
 }
