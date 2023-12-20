@@ -3,11 +3,3 @@
 java:S5993"9Change the visibility of this constructor to "protected".(Î™íúÿÿÿÿ8·àûëÇ1
 E
 java:S1481="(Remove this unused "qty" local variable.(Ù²¡ß8ÄàûëÇ1
-}
-java:S3038{"["getSelectByIdQuery" is defined in the "IDao" interface and can be removed from this class.(õşˆÜşÿÿÿÿ8ì—ìÇ1
-w
-java:S3038|"Z"getSelectAllQuery" is defined in the "IDao" interface and can be removed from this class.(¡Á–õ8ÌàûëÇ1
-y
-java:S3038}"W"getInsertQuery" is defined in the "IDao" interface and can be removed from this class.(àïƒ ùÿÿÿÿ8ªÚ£ìÇ1
-t
-java:S3038~"W"getDeleteQuery" is defined in the "IDao" interface and can be removed from this class.(ËŠ’³8ªÚ£ìÇ1

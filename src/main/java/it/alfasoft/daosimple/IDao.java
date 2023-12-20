@@ -4,7 +4,6 @@ import java.sql.*;
 import java.util.List;
 
 public interface IDao<T,I> {
-    Connection getConnection() throws DaoException;
     //CRUD OPERATIONS
     I create(T elemento) throws DaoException;
     List<T> read() throws DaoException;
@@ -14,17 +13,4 @@ public interface IDao<T,I> {
     T getById(I id) throws DaoException;
     List<T> find(String searchText) throws DaoException;
     List<T> find(T searchObj) throws DaoException;
-
-    T convertToDto(ResultSet rs) throws DaoException;
-    boolean checkOggetto(T elemento) throws DaoException;
-    I getGeneratedKey(Statement stmt) throws DaoException;
-
-    String getSelectByIdQuery(I id);
-    String getSelectAllQuery();
-    String getInsertQuery(T elemento);
-    String getDeleteQuery(I id);
-    String getUpdateQuery(I id, T elemento);
-    String getReplaceQuery(I id, T elemento);
-    String getSearchByStringQuery(String searchText);
-    String getSearchByObjectQuery(T searchObj);
 }

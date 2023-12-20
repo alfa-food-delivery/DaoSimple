@@ -128,4 +128,8 @@ public abstract class DaoImpl<T,I> implements IDao<T,I>, Serializable {
     public abstract String getReplaceQuery(I id, T elemento);
     public abstract String getSearchByStringQuery(String searchText);
     public abstract String getSearchByObjectQuery(T elemento);
+
+    public abstract T convertToDto(ResultSet rs) throws DaoException;
+    public abstract boolean checkOggetto(T elemento) throws DaoException;
+    public abstract I getGeneratedKey(Statement stmt) throws DaoException;
 }
