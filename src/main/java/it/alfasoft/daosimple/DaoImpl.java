@@ -43,7 +43,6 @@ public abstract class DaoImpl<T,I> implements IDao<T,I>, Serializable {
         catch(Exception e){ e.printStackTrace(); throw new DaoException(e);}
     }
 
-
     public List<T> getList(ResultSet rs) throws DaoException{
         try
         {
