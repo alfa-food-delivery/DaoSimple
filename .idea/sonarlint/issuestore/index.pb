@@ -11,3 +11,6 @@ e
 -src/main/java/it/alfasoft/daosimple/IDao.java,f\9\f9c11c261250125096e31fb441b2028599940e40
 ]
 -src/main/java/it/alfasoft/daosimple/IDto.java,7\1\71b5d789180cebc30992103de4cbf4c58705f1ba
+:
+
+Dockerfile,6\6\6651ddff6eb82c840ced7c1dddee15c6e1913dd4

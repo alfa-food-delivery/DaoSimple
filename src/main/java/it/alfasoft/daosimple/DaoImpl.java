@@ -22,14 +22,18 @@ public abstract class DaoImpl<T,I> implements IDao<T,I>, Serializable {
         String dbuser = null;
         String dbpwd = null;
         try {
-            dburl = PropertiesManager.getProperties().getProperty("db.url");
-            dbuser =PropertiesManager.getProperties().getProperty("db.user");
-            dbpwd = PropertiesManager.getProperties().getProperty("db.password");
+            dburl = PropertiesManager.getProperties().getProperty("dburl");
+            dbuser =PropertiesManager.getProperties().getProperty("dbuser");
+            dbpwd = PropertiesManager.getProperties().getProperty("dbpassword");
         }
         catch (FileNotFoundException e) { e.printStackTrace();throw new DaoException(e);}
+
+        System.out.println("Connection: " + dburl + " " + dbuser + " " + dbpwd);
+
         //Il driver manager consente di aprire una connessione con il DB
         try { connection = DriverManager.getConnection(dburl,dbuser,dbpwd);}
         catch (SQLException e) { e.printStackTrace(); throw new DaoException(e);}
+
         return connection;
     }
 
